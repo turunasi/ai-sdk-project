@@ -1,0 +1,93 @@
+{
+  // ワークスペースに含めるフォルダを指定します
+  "folders": [
+    {
+      "path": ".." // .vscodeフォルダの親、つまりプロジェクトルートを指します
+    }
+  ],
+
+  // ワークスペース全体で共有するVS Codeの設定
+  "settings": {
+    // -------------------------------------------------------------------------
+    // ■ Editor & Formatting
+    // -------------------------------------------------------------------------
+
+    // デフォルトのフォーマッターを Prettier に設定
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+    // ファイル保存時に自動でフォーマットを実行
+    "editor.formatOnSave": true,
+
+    // ファイル保存時に ESLint の自動修正を実行
+    // "explicit" にすることで、明示的に fixAll アクションが実行されるようになります
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+
+    // -------------------------------------------------------------------------
+    // ■ Language Specific Settings
+    // -------------------------------------------------------------------------
+
+    // JavaScript/TypeScript ファイルに対するデフォルトフォーマッターを指定
+    "[javascript][javascriptreact][typescript][typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+
+    // Tailwind CSS を使用する場合、CSSファイルの言語モードを 'tailwindcss' に設定
+    // これにより、Tailwind CSS IntelliSense 拡張機能が有効になります
+    "files.associations": {
+      "*.css": "tailwindcss"
+    },
+
+    // プロジェクトにインストールされたTypeScriptのバージョンを使用
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+
+    // -------------------------------------------------------------------------
+    // ■ File & Search Settings
+    // -------------------------------------------------------------------------
+
+    // 検索対象から除外するフォルダやファイル
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/.next": true,
+      "**/out": true,
+      "**/pnpm-lock.yaml": true,
+      "**/yarn.lock": true,
+      "**/package-lock.json": true
+    },
+    // ファイル監視対象から除外
+    "files.watcherExclude": {
+      "**/.git/objects/**": true,
+      "**/.git/subtree-cache/**": true,
+      "**/node_modules/*/**": true,
+      "**/.next/**": true
+    }
+  },
+
+  // ワークスペースで推奨する拡張機能のリスト
+  "extensions": {
+    "recommendations": [
+      // --- Core Development ---
+      "dbaeumer.vscode-eslint",         // ESLint 連携
+      "esbenp.prettier-vscode",       // Prettier 連携
+      "bradlc.vscode-tailwindcss",    // Tailwind CSS の自動補完やシンタックスハイライト
+      "csstools.postcss",             // PostCSS 構文サポート (Tailwind CSSで内部的に使用)
+
+      // --- Development Experience ---
+      "eamodio.gitlens",                // Gitの機能を拡張し、コードの履歴を追いやすくする
+      "GitHub.copilot",               // AIによるコーディング支援
+      "yoavbls.pretty-ts-errors",     // TypeScriptのエラーメッセージを分かりやすく表示
+      "jock.svg",                     // SVGファイルのプレビュー機能
+
+      // --- Testing ---
+      "vitest.explorer",              // Vitest テストエクスプローラー
+      "ms-playwright.playwright",     // E2Eテストツール Playwright の連携
+
+      // --- Optional but highly useful ---
+      "Prisma.prisma",                // ORMのPrismaを使用する場合に便利
+      "ms-azuretools.vscode-docker",  // Dockerを使用する場合
+      "GitHub.vscode-pull-request-github" // VS Code上でGitHubのPull Requestを管理
+    ]
+  }
+}
