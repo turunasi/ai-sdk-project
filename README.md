@@ -1,13 +1,15 @@
-# AI Chat Application
+# AIチャットアプリケーション
 
-Next.jsとVercel AI SDKを使用して構築された、モダンでレスポンシブなチャットアプリケーションです。
+## 概要
+
+Next.jsとVercel AI SDKを使用して構築された、モダンでスケーラブルなチャットアプリケーションです。
 
 ## ✨ 主な機能
 
-- **リアルタイムAIチャット**: AIとシームレスでリアルタイムな会話ができます。
-- **ストリーミング応答**: AIの応答はトークンごとにストリーミングされ、よりインタラクティブな体験を提供します。
+- **リアルタイムなAIとの対話**: AIとリアルタイムでスムーズな会話ができます。
+- **ストリーミング応答**: AIの応答がトークンごとにストリーミングされるため、ユーザーは素早いフィードバックを得られます。
 - **モダンなUI**: Tailwind CSSで構築された、クリーンでレスポンシブなユーザーインターフェース。
-- **スケーラブルなアーキテクチャ**: プロジェクトの構造は、[bulletproof-react](https://github.com/alan2207/bulletproof-react)の哲学に触発され、スケーラビリティとメンテナンス性を考慮して設計されています。
+- **スケーラブルなアーキテクチャ**: [bulletproof-react](https://github.com/alan2207/bulletproof-react)の設計思想を参考に、将来の機能拡張を見据えたスケーラビリティとメンテナンス性の高い構成を採用しています。
 
 ## 🛠️ 技術スタック
 
@@ -15,12 +17,14 @@ Next.jsとVercel AI SDKを使用して構築された、モダンでレスポン
 - **言語**: [TypeScript](https://www.typescriptlang.org/)
 - **UI**: [React](https://react.dev/) & [Tailwind CSS](https://tailwindcss.com/)
 - **AI連携**: [Vercel AI SDK](https://sdk.vercel.ai/)
+- **テスト**: [Jest](https://jestjs.io/), [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+- **コード品質**: [ESLint](https://eslint.org/), [Prettier](https://prettier.io/), [Husky](https://typicode.github.io/husky/), [lint-staged](https://github.com/okonet/lint-staged)
 
 ## 📂 プロジェクト構造
 
-このプロジェクトは、**bulletproof-react**アーキテクチャに触発された、機能ベースのディレクトリ構造を採用しています。このアプローチは、アプリケーションの成長に合わせてコードベースを整理し、スケーラブルで保守しやすくするのに役立ちます。
+このプロジェクトでは、**bulletproof-react**の考え方に基づいた、機能ベースのディレクトリ構造を採用しています。このアプローチにより、アプリケーションが成長してもコードベースが整理され、スケーラビリティと保守性が向上します。
 
-特定の機能に関連するすべてのコードは、`src/features/`以下の独自のディレクトリにまとめて配置されます。例えば、チャット機能に関するすべてのコンポーネントとロジックは`src/features/chat/`に存在します。
+チャット機能に関連するコンポーネントやロジックは、すべて`src/features/chat/`ディレクトリに集約されています。
 
 ```
 src/
@@ -81,3 +85,13 @@ src/
     ```
 
 ブラウザで http://localhost:3000 を開くと、アプリケーションが表示されます。
+
+## 🧪 テストの実行 (Running Tests)
+
+このプロジェクトでは、JestとReact Testing Libraryを使用してコンポーネントのテストを行っています。
+
+テストをウォッチモードで実行するには（ファイルの変更を監視して自動で再実行します）
+
+```bash
+pnpm test
+```
