@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { ChatMessage } from "../ChatMessage";
 import { type Message } from "ai/react";
-import "@testing-library/jest-dom";
 
 describe("ChatMessage", () => {
   it("renders a user message correctly", () => {

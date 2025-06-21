@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { ChatList } from "../ChatList";
 import React from "react";
 import { type Message } from "ai/react";
-import "@testing-library/jest-dom";
 
 describe("ChatList", () => {
   it("renders the initial message when no messages are provided", () => {

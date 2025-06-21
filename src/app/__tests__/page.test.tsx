@@ -1,7 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import ChatPage from "@/app/page";
 
-// Mock the useChat hook from @ai-sdk/react
+// Mock child components
+jest.mock("@/features/auth/components/UserSidebarContent", () => ({
+  UserSidebarContent: () => (
+    <div data-testid="user-sidebar-content">Mocked Sidebar</div>
+  ),
+}));
+
 jest.mock("@ai-sdk/react", () => ({
   useChat: () => ({
     messages: [],
@@ -13,8 +19,11 @@ jest.mock("@ai-sdk/react", () => ({
 }));
 
 describe("ChatPage", () => {
-  it("renders the chat page with header and initial message", () => {
+  it("renders the chat page with sidebar, header, and initial message", () => {
     render(<ChatPage />);
+
+    // Check for the mocked sidebar
+    expect(screen.getByTestId("user-sidebar-content")).toBeInTheDocument();
 
     // Check for the header
     expect(

@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ChatInput } from "../ChatInput";
-import "@testing-library/jest-dom";
 
 describe("ChatInput", () => {
   const mockHandleInputChange = jest.fn();

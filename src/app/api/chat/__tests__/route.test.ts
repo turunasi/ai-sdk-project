@@ -1,25 +1,19 @@
 import { POST } from "../route";
 import { streamText } from "ai";
-import { MockLanguageModelV1 } from "ai/test";
+import { google } from "@ai-sdk/google";
 
-// Mock external dependencies
+// Mock dependencies
 jest.mock("ai", () => ({
   streamText: jest.fn(),
 }));
 
-const mockNextResponse = jest.fn((body, init) => ({
-  json: () => Promise.resolve(JSON.parse(body)),
-  status: init?.status,
-  headers: new Headers(init?.headers),
+jest.mock("@ai-sdk/google", () => ({
+  google: jest.fn(),
 }));
 
-jest.mock("next/server", () => ({ NextResponse: mockNextResponse }));
-
 describe("POST /api/chat", () => {
-  const mockRequestJson = jest.fn();
-  const mockRequest = {
-    json: mockRequestJson,
-  } as unknown as Request;
+  const mockStreamText = streamText as jest.Mock;
+  const mockGoogle = google as jest.Mock;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -27,82 +21,72 @@ describe("POST /api/chat", () => {
 
   it("should return a data stream response on success", async () => {
     const mockMessages = [{ role: "user", content: "Hello" }];
-    const mockToDataStreamResponse = jest.fn(() => ({
-      /* mock stream response object */
-    }));
+    const mockStreamResponse = new Response("mock stream");
+    const mockResult = {
+      toDataStreamResponse: () => mockStreamResponse,
+    };
 
-    mockRequestJson.mockResolvedValueOnce({ messages: mockMessages });
-    (streamText as jest.Mock).mockResolvedValueOnce({
-      toDataStreamResponse: mockToDataStreamResponse,
+    mockStreamText.mockResolvedValue(mockResult);
+    mockGoogle.mockReturnValue("mock-google-model");
+
+    const request = new Request("http://localhost/api/chat", {
+      method: "POST",
+      body: JSON.stringify({ messages: mockMessages }),
     });
 
-    const mockModel = new MockLanguageModelV1({});
+    const response = await POST(request);
 
-    jest.spyOn(require("@ai-sdk/google"), "google").mockReturnValue(mockModel);
-
-    const response = await POST(mockRequest);
-
-    expect(mockRequestJson).toHaveBeenCalledTimes(1);
-    expect(streamText).toHaveBeenCalledTimes(1);
-    expect(streamText).toHaveBeenCalledWith({
-      model: "mock-model",
+    expect(mockGoogle).toHaveBeenCalledWith("models/gemini-2.0-flash-lite");
+    expect(mockStreamText).toHaveBeenCalledWith({
+      model: "mock-google-model",
       messages: mockMessages,
     });
-    expect(mockToDataStreamResponse).toHaveBeenCalledTimes(1);
-    expect(response).toEqual(mockToDataStreamResponse());
+    expect(response).toBe(mockStreamResponse);
   });
 
-  it("should return a 500 error response when req.json() fails", async () => {
-    const mockError = new Error("Invalid JSON");
-    mockRequestJson.mockRejectedValueOnce(mockError);
+  it("should return a 500 error if request body is not valid JSON", async () => {
+    const request = new Request("http://localhost/api/chat", {
+      method: "POST",
+      body: "not json",
+    });
 
-    const response = await POST(mockRequest);
+    const response = await POST(request);
+    const responseBody = await response.json();
 
-    expect(mockRequestJson).toHaveBeenCalledTimes(1);
-    expect(streamText).not.toHaveBeenCalled();
-    expect(mockNextResponse).toHaveBeenCalledTimes(1);
-    expect(mockNextResponse).toHaveBeenCalledWith(
-      JSON.stringify({ error: "Invalid JSON" }),
-      { status: 500, headers: { "Content-Type": "application/json" } },
-    );
-    const jsonResponse = await (response as any).json();
-    expect(jsonResponse).toEqual({ error: "Invalid JSON" });
-    expect((response as any).status).toBe(500);
+    expect(response.status).toBe(500);
+    expect(responseBody.error).toContain("Unexpected token");
   });
 
-  it("should return a 500 error response when streamText() fails", async () => {
+  it("should return a 500 error if streamText fails", async () => {
     const mockMessages = [{ role: "user", content: "Hello" }];
     const mockError = new Error("AI service error");
+    mockStreamText.mockRejectedValue(mockError);
 
-    mockRequestJson.mockResolvedValueOnce({ messages: mockMessages });
-    (streamText as jest.Mock).mockRejectedValueOnce(mockError);
+    const request = new Request("http://localhost/api/chat", {
+      method: "POST",
+      body: JSON.stringify({ messages: mockMessages }),
+    });
 
-    const response = await POST(mockRequest);
+    const response = await POST(request);
+    const responseBody = await response.json();
 
-    expect(mockRequestJson).toHaveBeenCalledTimes(1);
-    expect(streamText).toHaveBeenCalledTimes(1);
-    expect(mockNextResponse).toHaveBeenCalledTimes(1);
-    expect(mockNextResponse).toHaveBeenCalledWith(
-      JSON.stringify({ error: "AI service error" }),
-      { status: 500, headers: { "Content-Type": "application/json" } },
-    );
-    const jsonResponse = await (response as any).json();
-    expect(jsonResponse).toEqual({ error: "AI service error" });
-    expect((response as any).status).toBe(500);
+    expect(response.status).toBe(500);
+    expect(responseBody.error).toBe("AI service error");
   });
 
-  it("should return a 500 error response for unknown errors", async () => {
-    mockRequestJson.mockResolvedValueOnce({ messages: [] });
-    (streamText as jest.Mock).mockRejectedValueOnce("unknown error type"); // Non-Error object
+  it("should handle unknown errors", async () => {
+    const mockMessages = [{ role: "user", content: "Hello" }];
+    mockStreamText.mockRejectedValue("a string error"); // Not an instance of Error
 
-    const response = await POST(mockRequest);
+    const request = new Request("http://localhost/api/chat", {
+      method: "POST",
+      body: JSON.stringify({ messages: mockMessages }),
+    });
 
-    expect(mockNextResponse).toHaveBeenCalledWith(
-      JSON.stringify({ error: "An unknown error occurred." }),
-      { status: 500, headers: { "Content-Type": "application/json" } },
-    );
-    const jsonResponse = await (response as any).json();
-    expect(jsonResponse).toEqual({ error: "An unknown error occurred." });
-    expect((response as any).status).toBe(500);
+    const response = await POST(request);
+    const responseBody = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(responseBody.error).toBe("An unknown error occurred.");
   });
 });

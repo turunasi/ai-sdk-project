@@ -21,8 +21,14 @@ const config = {
   coverageReporters: ["json", "lcov", "text", "clover"],
 
   // Add more setup options before each test is run
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.mjs"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   testEnvironment: "jest-environment-jsdom",
+  moduleDirectories: ["node_modules", "<rootDir>/"],
+  // Handle ESM modules in node_modules
+  transformIgnorePatterns: [
+    "/node_modules/(?!(next-auth|@auth/core|@ai-sdk/react|jest-runtime)/)",
+    "^.+\\.module\\.(css|sass|scss)$",
+  ],
   moduleNameMapper: {
     // Handle module aliases (this will be automatically configured for you soon)
     "^@/(.*)$": "<rootDir>/src/$1",
@@ -36,5 +42,6 @@ const config = {
   ],
 };
 
-// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
+// createJestConfig is an async function that returns a Jest config -
+// so we have to export a promise
 export default createJestConfig(config);
