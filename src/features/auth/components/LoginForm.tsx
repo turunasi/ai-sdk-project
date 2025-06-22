@@ -26,8 +26,8 @@ export function LoginForm() {
         setError("Invalid email or password");
       } else {
         // ログイン成功時の処理
-        // ホームページにリダイレクトします
-        router.push("/");
+        // チャットページにリダイレクトします
+        router.push("/chat");
         router.refresh(); // サーバーコンポーネントを再レンダリングさせる場合に必要
       }
     } catch (err) {

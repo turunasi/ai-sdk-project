@@ -1,5 +1,6 @@
 "use client";
 
+import { LogOut } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 
 /**
@@ -21,38 +22,25 @@ export function UserSidebarContent() {
   };
 
   return (
-    <div className="flex h-full flex-col">
-      {" "}
-      {/* サイドバー内のコンテンツを縦方向に配置 */}
-      <div className="flex-1">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-          ユーザー情報
-        </h2>
-        <div className="mt-4 space-y-4">
-          <div>
-            <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-              名前
-            </span>
-            <p className="truncate text-zinc-900 dark:text-zinc-100">
-              {user.name}
-            </p>
-          </div>
-          <div>
-            <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-              メールアドレス
-            </span>
-            <p className="truncate text-zinc-900 dark:text-zinc-100">
-              {user.email}
-            </p>
-          </div>
+    // mt-autoでコンテナの下部に配置し、境界線を追加
+    <div className="mt-auto border-t border-zinc-200 p-4 dark:border-zinc-800">
+      <div className="flex items-center gap-3">
+        <div className="flex-1">
+          <p className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+            {user.name}
+          </p>
+          <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
+            {user.email}
+          </p>
         </div>
+        <button
+          onClick={handleSignOut}
+          className="rounded-md p-2 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+        >
+          <LogOut size={18} />
+          <span className="sr-only">ログアウト</span>
+        </button>
       </div>
-      <button
-        onClick={handleSignOut}
-        className="mt-4 w-full rounded-lg bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
-      >
-        ログアウト
-      </button>
     </div>
   );
 }

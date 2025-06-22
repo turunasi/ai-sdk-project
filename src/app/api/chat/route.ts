@@ -1,11 +1,24 @@
 import { streamText } from "ai";
 import { google } from "@ai-sdk/google";
 import { NextResponse } from "next/server";
+import { auth } from "@/features/auth/lib/auth";
 
-export const runtime = "edge";
+// PrismaをNode.jsランタイムで利用するため、Edge Runtimeを無効化します。
+// Prisma AccelerateやData Proxyを利用する場合は、この行を有効にしても構いません。
+// export const runtime = "edge";
 
 export async function POST(req: Request) {
   try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
     const { messages } = await req.json();
 
     const result = await streamText({
