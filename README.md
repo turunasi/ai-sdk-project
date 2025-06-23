@@ -34,15 +34,26 @@ Next.jsとVercel AI SDKを使用して構築された、モダンでスケーラ
 src/
 ├── app/
 │   ├── api/chat/route.ts   # チャット用のAPIエンドポイント
-│   └── page.tsx            # メインページのコンポーネント
+│   └── page.tsx            # メインページのコンポーネント (認証後アクセス)
+├── components/             # 共通のUIコンポーネントやレイアウト
+│   └── Sidebar.tsx         # 例: 汎用的なサイドバーコンポーネント
 ├── features/
-│   └── chat/
+│   ├── auth/
+│   │   ├── components/     # 認証機能のReactコンポーネント
+│   │   │   └── UserSidebarContent.tsx # 例: ユーザー情報表示コンポーネント
+│   │   ├── lib/            # 認証関連のユーティリティやロジック
+│   │   │   └── auth.ts     # Auth.jsの設定と認証ロジック
+│   │   └── index.ts        # 認証機能のエントリーポイント
+│   └── chat/               # チャット機能関連
 │       ├── components/     # チャット機能のReactコンポーネント
 │       │   ├── ChatInput.tsx
 │       │   ├── ChatList.tsx
 │       │   └── ChatMessage.tsx
 │       └── index.ts        # チャット機能のエントリーポイント
-└── ...
+├── lib/                    # 共通のユーティリティ関数やヘルパー
+│   └── ...
+└── middleware.ts           # Next.jsのミドルウェア (認証ルート保護など)
+
 ```
 
 また、`tsconfig.json`で設定されたパスエイリアス（`@/*`）を使用して、インポートパスを簡素化し、コードの可読性を向上させています。

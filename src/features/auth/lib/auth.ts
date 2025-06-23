@@ -1,5 +1,27 @@
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs"; // bcryptjsをインポート
+import { prisma } from "@/features/database"; // Prismaクライアントをインポート
+
+/**
+ * 新規ユーザーをデータベースに追加する関数
+ * @param user - 追加するユーザー情報 (email, password, name?)
+ * @returns 作成されたユーザーオブジェクト
+ * @throws Error - 同じメールアドレスのユーザーが既に存在する場合
+ */
+export const addUser = async (user: {
+  email: string;
+  password: string;
+  name?: string;
+}) => {
+  const existingUser = await prisma.user.findUnique({
+    where: { email: user.email },
+  });
+  if (existingUser) {
+    throw new Error("User with this email already exists.");
+  }
+  return prisma.user.create({ data: user });
+};
 
 /**
  * NextAuth.jsの設定オプションです。
@@ -12,20 +34,6 @@ export const authConfig = {
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        // ここでデータベースなどと照合してユーザーを検証します。
-        // 今回はデモ用のダミー認証ロジックです
-        if (
-          credentials.email === "user@example.com" &&
-          credentials.password === "password123"
-        ) {
-          // 検証成功後、ユーザーオブジェクトを返します。
-          // このオブジェクトは`jwt`コールバックの`user`引数として渡されます。
-          return { id: "1", name: "Taro Yamada", email: "user@example.com" };
-        }
-        // 検証失敗時はnullを返します。
-        return null;
       },
     }),
   ],

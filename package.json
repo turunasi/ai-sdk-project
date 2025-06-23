@@ -10,8 +10,8 @@
     "format": "prettier --write .",
     "prepare": "husky install",
     "test": "jest",
-    "prisma:generate": "prisma generate --schema src/features/database/config/schema.prisma",
-    "prisma:migrate:dev": "dotenv -e .env.local -- prisma migrate dev --schema src/features/database/config/schema.prisma"
+    "prisma:generate": "prisma generate --schema ./prisma/schema.prisma",
+    "prisma:migrate:dev": "dotenv -e .env.local -- prisma migrate dev --schema ./prisma/schema.prisma"
   },
   "dependencies": {
     "@ai-sdk/google": "^1.2.19",
