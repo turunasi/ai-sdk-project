@@ -1,4 +1,4 @@
-import { streamText } from "ai";
+import { experimental_createMCPClient, streamText } from "ai";
 import { google } from "@ai-sdk/google";
 import { NextResponse } from "next/server";
 import { auth } from "@/features/auth/lib/auth";
@@ -19,11 +19,26 @@ export async function POST(req: Request) {
       });
     }
 
+    const mcpClient = await experimental_createMCPClient({
+      transport: {
+        type: "sse",
+        url: process.env.MCP_SERVER_URL || "http://127.0.0.1:8000/sse",
+      },
+    });
+
     const { messages } = await req.json();
+
+    // Schema Discovery を使用して MCP サーバーからツール定義を取得
+    const tools = await mcpClient.tools();
 
     const result = await streamText({
       model: google("models/gemini-2.0-flash-lite"),
       messages,
+      tools,
+      onFinish: () => {
+        // ストリーミング応答が完了したら、必ず MCP クライアントの接続を閉じる
+        mcpClient.close();
+      },
     });
 
     return result.toDataStreamResponse();

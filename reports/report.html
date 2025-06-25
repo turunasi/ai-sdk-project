@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="71" failures="9" errors="0" time="2.876">
-  <testsuite name="Prisma Client Singleton" errors="0" failures="1" skipped="0" timestamp="2025-06-25T02:28:22" time="0.549" tests="2">
-    <testcase classname="Prisma Client Singleton should create a new PrismaClient instance if one does not exist" name="Prisma Client Singleton should create a new PrismaClient instance if one does not exist" time="0.007">
+<testsuites name="jest tests" tests="71" failures="9" errors="0" time="2.937">
+  <testsuite name="Prisma Client Singleton" errors="0" failures="1" skipped="0" timestamp="2025-06-25T03:08:05" time="0.533" tests="2">
+    <testcase classname="Prisma Client Singleton should create a new PrismaClient instance if one does not exist" name="Prisma Client Singleton should create a new PrismaClient instance if one does not exist" time="0.006">
       <failure>Error: expect(received).toBeInstanceOf(expected)
 
 Expected constructor: mockConstructor
@@ -13,10 +13,10 @@ Received constructor: Object
     <testcase classname="Prisma Client Singleton should return the existing PrismaClient instance if one already exists" name="Prisma Client Singleton should return the existing PrismaClient instance if one already exists" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="POST /api/chat/history" errors="0" failures="3" skipped="0" timestamp="2025-06-25T02:28:21" time="0.643" tests="5">
-    <testcase classname="POST /api/chat/history should return 401 if user is unauthorized" name="POST /api/chat/history should return 401 if user is unauthorized" time="0.008">
+  <testsuite name="POST /api/chat/history" errors="0" failures="3" skipped="0" timestamp="2025-06-25T03:08:05" time="0.654" tests="5">
+    <testcase classname="POST /api/chat/history should return 401 if user is unauthorized" name="POST /api/chat/history should return 401 if user is unauthorized" time="0.009">
     </testcase>
-    <testcase classname="POST /api/chat/history should update an existing conversation with new messages" name="POST /api/chat/history should update an existing conversation with new messages" time="0.051">
+    <testcase classname="POST /api/chat/history should update an existing conversation with new messages" name="POST /api/chat/history should update an existing conversation with new messages" time="0.062">
       <failure>Error: expect(received).toBe(expected) // Object.is equality
 
 Expected: 200
@@ -24,7 +24,7 @@ Received: 500
     at Object.toBe (/Users/yukinishii/NRI/ai-sdk-project/src/app/api/chat/history/__tests__/route.test.ts:66:29)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="POST /api/chat/history should create a new conversation if no conversationId is provided" name="POST /api/chat/history should create a new conversation if no conversationId is provided" time="0.002">
+    <testcase classname="POST /api/chat/history should create a new conversation if no conversationId is provided" name="POST /api/chat/history should create a new conversation if no conversationId is provided" time="0.004">
       <failure>Error: expect(received).toBe(expected) // Object.is equality
 
 Expected: 200
@@ -32,18 +32,18 @@ Received: 500
     at Object.toBe (/Users/yukinishii/NRI/ai-sdk-project/src/app/api/chat/history/__tests__/route.test.ts:101:29)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="POST /api/chat/history should return 400 if request body is invalid" name="POST /api/chat/history should return 400 if request body is invalid" time="0.001">
+    <testcase classname="POST /api/chat/history should return 400 if request body is invalid" name="POST /api/chat/history should return 400 if request body is invalid" time="0.002">
       <failure>TypeError: Response.json is not a function
     at NextResponse.json (/Users/yukinishii/NRI/ai-sdk-project/node_modules/.pnpm/next@15.3.4_@babel+core@7.27.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/src/server/web/spec-extension/response.ts:113:41)
     at json (/Users/yukinishii/NRI/ai-sdk-project/src/app/api/chat/history/route.ts:67:27)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)
     at Object.&lt;anonymous&gt; (/Users/yukinishii/NRI/ai-sdk-project/src/app/api/chat/history/__tests__/route.test.ts:126:22)</failure>
     </testcase>
-    <testcase classname="POST /api/chat/history should return 500 if an unexpected error occurs" name="POST /api/chat/history should return 500 if an unexpected error occurs" time="0.005">
+    <testcase classname="POST /api/chat/history should return 500 if an unexpected error occurs" name="POST /api/chat/history should return 500 if an unexpected error occurs" time="0.004">
     </testcase>
   </testsuite>
-  <testsuite name="Auth.js Config Callbacks" errors="0" failures="3" skipped="0" timestamp="2025-06-25T02:28:21" time="0.879" tests="8">
-    <testcase classname="Auth.js Config Callbacks authorize callback should return a user object for valid credentials" name="Auth.js Config Callbacks authorize callback should return a user object for valid credentials" time="0.005">
+  <testsuite name="Auth.js Config Callbacks" errors="0" failures="3" skipped="0" timestamp="2025-06-25T03:08:05" time="0.894" tests="8">
+    <testcase classname="Auth.js Config Callbacks authorize callback should return a user object for valid credentials" name="Auth.js Config Callbacks authorize callback should return a user object for valid credentials" time="0.007">
       <failure>Error: expect(received).toEqual(expected) // deep equality
 
 Expected: {&quot;email&quot;: &quot;user@example.com&quot;, &quot;id&quot;: &quot;1&quot;, &quot;name&quot;: &quot;Taro Yamada&quot;}
@@ -51,7 +51,7 @@ Received: null
     at Object.toEqual (/Users/yukinishii/NRI/ai-sdk-project/src/features/auth/lib/__tests__/auth.test.ts:51:20)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Auth.js Config Callbacks authorize callback should throw CredentialsSignin for invalid email" name="Auth.js Config Callbacks authorize callback should throw CredentialsSignin for invalid email" time="0.001">
+    <testcase classname="Auth.js Config Callbacks authorize callback should throw CredentialsSignin for invalid email" name="Auth.js Config Callbacks authorize callback should throw CredentialsSignin for invalid email" time="0">
       <failure>Error: expect(received).rejects.toThrow()
 
 Matcher error: received value must be a promise or a function returning a promise
@@ -99,23 +99,23 @@ Received has value: null
     at runTest (/Users/yukinishii/NRI/ai-sdk-project/node_modules/.pnpm/jest-runner@29.7.0/node_modules/jest-runner/build/runTest.js:444:34)
     at Object.worker (/Users/yukinishii/NRI/ai-sdk-project/node_modules/.pnpm/jest-runner@29.7.0/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
     </testcase>
-    <testcase classname="Auth.js Config Callbacks jwt callback should add user id to the token if user object exists" name="Auth.js Config Callbacks jwt callback should add user id to the token if user object exists" time="0.001">
+    <testcase classname="Auth.js Config Callbacks jwt callback should add user id to the token if user object exists" name="Auth.js Config Callbacks jwt callback should add user id to the token if user object exists" time="0">
     </testcase>
-    <testcase classname="Auth.js Config Callbacks jwt callback should return the original token if user object does not exist" name="Auth.js Config Callbacks jwt callback should return the original token if user object does not exist" time="0.001">
+    <testcase classname="Auth.js Config Callbacks jwt callback should return the original token if user object does not exist" name="Auth.js Config Callbacks jwt callback should return the original token if user object does not exist" time="0">
     </testcase>
     <testcase classname="Auth.js Config Callbacks session callback should add user id from token to the session" name="Auth.js Config Callbacks session callback should add user id from token to the session" time="0">
     </testcase>
     <testcase classname="Auth.js Config Callbacks authorized callback should return true if auth object with user exists" name="Auth.js Config Callbacks authorized callback should return true if auth object with user exists" time="0.001">
     </testcase>
-    <testcase classname="Auth.js Config Callbacks authorized callback should return false if auth object is null or has no user" name="Auth.js Config Callbacks authorized callback should return false if auth object is null or has no user" time="0.002">
+    <testcase classname="Auth.js Config Callbacks authorized callback should return false if auth object is null or has no user" name="Auth.js Config Callbacks authorized callback should return false if auth object is null or has no user" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="ConversationPage" errors="0" failures="1" skipped="0" timestamp="2025-06-25T02:28:21" time="0.955" tests="3">
-    <testcase classname="ConversationPage should call notFound if user is not authenticated" name="ConversationPage should call notFound if user is not authenticated" time="0.016">
+  <testsuite name="ConversationPage" errors="0" failures="1" skipped="0" timestamp="2025-06-25T03:08:05" time="0.93" tests="3">
+    <testcase classname="ConversationPage should call notFound if user is not authenticated" name="ConversationPage should call notFound if user is not authenticated" time="0.01">
     </testcase>
     <testcase classname="ConversationPage should call notFound if conversation is not found for the user" name="ConversationPage should call notFound if conversation is not found for the user" time="0.003">
     </testcase>
-    <testcase classname="ConversationPage should render ChatPageContent with initial messages if conversation is found" name="ConversationPage should render ChatPageContent with initial messages if conversation is found" time="0.047">
+    <testcase classname="ConversationPage should render ChatPageContent with initial messages if conversation is found" name="ConversationPage should render ChatPageContent with initial messages if conversation is found" time="0.027">
       <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: ObjectContaining {&quot;conversationId&quot;: &quot;found-conv-id&quot;, &quot;initialMessages&quot;: [{&quot;content&quot;: &quot;Hello&quot;, &quot;id&quot;: &quot;msg1&quot;, &quot;role&quot;: &quot;user&quot;}, {&quot;content&quot;: &quot;Hi there&quot;, &quot;id&quot;: &quot;msg2&quot;, &quot;role&quot;: &quot;assistant&quot;}]}, {}
@@ -126,146 +126,146 @@ Number of calls: 1
     at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="LoginForm" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:21" time="1.062" tests="3">
-    <testcase classname="LoginForm renders the login form correctly" name="LoginForm renders the login form correctly" time="0.09">
+  <testsuite name="LoginForm" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:05" time="1.191" tests="3">
+    <testcase classname="LoginForm renders the login form correctly" name="LoginForm renders the login form correctly" time="0.192">
     </testcase>
-    <testcase classname="LoginForm calls the authenticate action on submit" name="LoginForm calls the authenticate action on submit" time="0.047">
+    <testcase classname="LoginForm calls the authenticate action on submit" name="LoginForm calls the authenticate action on submit" time="0.069">
     </testcase>
-    <testcase classname="LoginForm handles failed login and displays an error message" name="LoginForm handles failed login and displays an error message" time="0.018">
-    </testcase>
-  </testsuite>
-  <testsuite name="ChatHistory" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:22" time="0.215" tests="3">
-    <testcase classname="ChatHistory renders NewChatButton" name="ChatHistory renders NewChatButton" time="0.02">
-    </testcase>
-    <testcase classname="ChatHistory renders chat history links correctly" name="ChatHistory renders chat history links correctly" time="0.008">
-    </testcase>
-    <testcase classname="ChatHistory renders no chat history when history is empty" name="ChatHistory renders no chat history when history is empty" time="0.004">
+    <testcase classname="LoginForm handles failed login and displays an error message" name="LoginForm handles failed login and displays an error message" time="0.025">
     </testcase>
   </testsuite>
-  <testsuite name="ChatPageContent" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:22" time="1.369" tests="3">
-    <testcase classname="ChatPageContent renders ChatList and ChatInput with initial messages" name="ChatPageContent renders ChatList and ChatInput with initial messages" time="0.118">
+  <testsuite name="ChatPageContent" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:05" time="1.266" tests="3">
+    <testcase classname="ChatPageContent renders ChatList and ChatInput with initial messages" name="ChatPageContent renders ChatList and ChatInput with initial messages" time="0.055">
     </testcase>
-    <testcase classname="ChatPageContent calls onFinish and saves chat history when assistant message is received" name="ChatPageContent calls onFinish and saves chat history when assistant message is received" time="0.015">
+    <testcase classname="ChatPageContent calls onFinish and saves chat history when assistant message is received" name="ChatPageContent calls onFinish and saves chat history when assistant message is received" time="0.008">
     </testcase>
-    <testcase classname="ChatPageContent should not call fetch or refresh if onFinish fails (e.g., network error)" name="ChatPageContent should not call fetch or refresh if onFinish fails (e.g., network error)" time="0.11">
-    </testcase>
-  </testsuite>
-  <testsuite name="NewChatButton" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:22" time="0.771" tests="2">
-    <testcase classname="NewChatButton renders the New Chat button" name="NewChatButton renders the New Chat button" time="0.148">
-    </testcase>
-    <testcase classname="NewChatButton calls router.push to /chat when clicked" name="NewChatButton calls router.push to /chat when clicked" time="0.015">
+    <testcase classname="ChatPageContent should not call fetch or refresh if onFinish fails (e.g., network error)" name="ChatPageContent should not call fetch or refresh if onFinish fails (e.g., network error)" time="0.031">
     </testcase>
   </testsuite>
-  <testsuite name="RootLayout" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.405" tests="2">
-    <testcase classname="RootLayout renders children correctly when user is not authenticated" name="RootLayout renders children correctly when user is not authenticated" time="0.222">
+  <testsuite name="RootLayout" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.223" tests="2">
+    <testcase classname="RootLayout renders children correctly when user is not authenticated" name="RootLayout renders children correctly when user is not authenticated" time="0.117">
     </testcase>
-    <testcase classname="RootLayout renders children correctly when user is authenticated" name="RootLayout renders children correctly when user is authenticated" time="0.003">
-    </testcase>
-  </testsuite>
-  <testsuite name="authenticate" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.367" tests="3">
-    <testcase classname="authenticate should call signIn with credentials and redirect on success" name="authenticate should call signIn with credentials and redirect on success" time="0.002">
-    </testcase>
-    <testcase classname="authenticate should return an error message for AuthError" name="authenticate should return an error message for AuthError" time="0.002">
-    </testcase>
-    <testcase classname="authenticate should re-throw non-AuthError errors" name="authenticate should re-throw non-AuthError errors" time="0.003">
+    <testcase classname="RootLayout renders children correctly when user is authenticated" name="RootLayout renders children correctly when user is authenticated" time="0.005">
     </testcase>
   </testsuite>
-  <testsuite name="ChatInput" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.126" tests="3">
-    <testcase classname="ChatInput renders correctly with initial state" name="ChatInput renders correctly with initial state" time="0.026">
+  <testsuite name="NewChatButton" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:05" time="0.612" tests="2">
+    <testcase classname="NewChatButton renders the New Chat button" name="NewChatButton renders the New Chat button" time="0.069">
     </testcase>
-    <testcase classname="ChatInput disables input and button when isLoading is true" name="ChatInput disables input and button when isLoading is true" time="0.006">
-    </testcase>
-    <testcase classname="ChatInput enables button when input is not empty and not loading" name="ChatInput enables button when input is not empty and not loading" time="0.005">
+    <testcase classname="NewChatButton calls router.push to /chat when clicked" name="NewChatButton calls router.push to /chat when clicked" time="0.011">
     </testcase>
   </testsuite>
-  <testsuite name="MainLayout" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.128" tests="2">
-    <testcase classname="MainLayout renders children and fetches chat history for authenticated user" name="MainLayout renders children and fetches chat history for authenticated user" time="0.009">
-    </testcase>
-    <testcase classname="MainLayout renders children and fetches empty chat history for unauthenticated user" name="MainLayout renders children and fetches empty chat history for unauthenticated user" time="0.002">
+  <testsuite name="SignUpPage" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.108" tests="1">
+    <testcase classname="SignUpPage renders the SignUpForm component" name="SignUpPage renders the SignUpForm component" time="0.006">
     </testcase>
   </testsuite>
-  <testsuite name="Sidebar" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.124" tests="1">
-    <testcase classname="Sidebar renders its children correctly" name="Sidebar renders its children correctly" time="0.003">
+  <testsuite name="authenticate" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.223" tests="3">
+    <testcase classname="authenticate should call signIn with credentials and redirect on success" name="authenticate should call signIn with credentials and redirect on success" time="0.003">
+    </testcase>
+    <testcase classname="authenticate should return an error message for AuthError" name="authenticate should return an error message for AuthError" time="0">
+    </testcase>
+    <testcase classname="authenticate should re-throw non-AuthError errors" name="authenticate should re-throw non-AuthError errors" time="0.004">
     </testcase>
   </testsuite>
-  <testsuite name="signup" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:22" time="0.976" tests="6">
-    <testcase classname="signup should return validation errors for invalid email" name="signup should return validation errors for invalid email" time="0.005">
+  <testsuite name="ChatHistory" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.142" tests="3">
+    <testcase classname="ChatHistory renders NewChatButton" name="ChatHistory renders NewChatButton" time="0.005">
     </testcase>
-    <testcase classname="signup should return validation errors for short password" name="signup should return validation errors for short password" time="0.001">
+    <testcase classname="ChatHistory renders chat history links correctly" name="ChatHistory renders chat history links correctly" time="0.007">
     </testcase>
-    <testcase classname="signup should create user, sign in, and redirect on successful signup" name="signup should create user, sign in, and redirect on successful signup" time="0.156">
-    </testcase>
-    <testcase classname="signup should return error message if email already exists" name="signup should return error message if email already exists" time="0.221">
-    </testcase>
-    <testcase classname="signup should return generic error if signIn fails after user creation" name="signup should return generic error if signIn fails after user creation" time="0.119">
-    </testcase>
-    <testcase classname="signup should re-throw non-AuthError errors from signIn" name="signup should re-throw non-AuthError errors from signIn" time="0.109">
+    <testcase classname="ChatHistory renders no chat history when history is empty" name="ChatHistory renders no chat history when history is empty" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="UserSidebarContent" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:22" time="0.729" tests="3">
-    <testcase classname="UserSidebarContent renders user information and logout button when session exists" name="UserSidebarContent renders user information and logout button when session exists" time="0.052">
+  <testsuite name="ChatList" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.117" tests="3">
+    <testcase classname="ChatList renders the initial message when no messages are provided" name="ChatList renders the initial message when no messages are provided" time="0.003">
     </testcase>
-    <testcase classname="UserSidebarContent calls signOut when the logout button is clicked" name="UserSidebarContent calls signOut when the logout button is clicked" time="0.011">
+    <testcase classname="ChatList renders multiple messages correctly" name="ChatList renders multiple messages correctly" time="0.003">
+    </testcase>
+    <testcase classname="ChatList should scroll to the bottom when new messages are added" name="ChatList should scroll to the bottom when new messages are added" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="ChatMessage" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.104" tests="3">
+    <testcase classname="ChatMessage renders a user message correctly" name="ChatMessage renders a user message correctly" time="0.002">
+    </testcase>
+    <testcase classname="ChatMessage renders an AI message correctly" name="ChatMessage renders an AI message correctly" time="0.001">
+    </testcase>
+    <testcase classname="ChatMessage renders an empty message correctly" name="ChatMessage renders an empty message correctly" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="LoginPage" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.102" tests="1">
+    <testcase classname="LoginPage renders the LoginForm component" name="LoginPage renders the LoginForm component" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="UserSidebarContent" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.572" tests="3">
+    <testcase classname="UserSidebarContent renders user information and logout button when session exists" name="UserSidebarContent renders user information and logout button when session exists" time="0.128">
+    </testcase>
+    <testcase classname="UserSidebarContent calls signOut when the logout button is clicked" name="UserSidebarContent calls signOut when the logout button is clicked" time="0.025">
     </testcase>
     <testcase classname="UserSidebarContent renders null when there is no session data" name="UserSidebarContent renders null when there is no session data" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="NewChatPage" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.111" tests="2">
-    <testcase classname="NewChatPage should redirect to login if user is not authenticated" name="NewChatPage should redirect to login if user is not authenticated" time="0.007">
+  <testsuite name="signup" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:05" time="0.955" tests="6">
+    <testcase classname="signup should return validation errors for invalid email" name="signup should return validation errors for invalid email" time="0.003">
     </testcase>
-    <testcase classname="NewChatPage should create a new conversation and redirect to its chat page if user is authenticated" name="NewChatPage should create a new conversation and redirect to its chat page if user is authenticated" time="0.025">
+    <testcase classname="signup should return validation errors for short password" name="signup should return validation errors for short password" time="0.001">
+    </testcase>
+    <testcase classname="signup should create user, sign in, and redirect on successful signup" name="signup should create user, sign in, and redirect on successful signup" time="0.178">
+    </testcase>
+    <testcase classname="signup should return error message if email already exists" name="signup should return error message if email already exists" time="0.121">
+    </testcase>
+    <testcase classname="signup should return generic error if signIn fails after user creation" name="signup should return generic error if signIn fails after user creation" time="0.112">
+    </testcase>
+    <testcase classname="signup should re-throw non-AuthError errors from signIn" name="signup should re-throw non-AuthError errors from signIn" time="0.159">
     </testcase>
   </testsuite>
-  <testsuite name="Providers" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.112" tests="2">
+  <testsuite name="MainLayout" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.14" tests="2">
+    <testcase classname="MainLayout renders children and fetches chat history for authenticated user" name="MainLayout renders children and fetches chat history for authenticated user" time="0.016">
+    </testcase>
+    <testcase classname="MainLayout renders children and fetches empty chat history for unauthenticated user" name="MainLayout renders children and fetches empty chat history for unauthenticated user" time="0.013">
+    </testcase>
+  </testsuite>
+  <testsuite name="Sidebar" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.131" tests="1">
+    <testcase classname="Sidebar renders its children correctly" name="Sidebar renders its children correctly" time="0.01">
+    </testcase>
+  </testsuite>
+  <testsuite name="NewChatPage" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.089" tests="2">
+    <testcase classname="NewChatPage should redirect to login if user is not authenticated" name="NewChatPage should redirect to login if user is not authenticated" time="0.01">
+    </testcase>
+    <testcase classname="NewChatPage should create a new conversation and redirect to its chat page if user is authenticated" name="NewChatPage should create a new conversation and redirect to its chat page if user is authenticated" time="0.019">
+    </testcase>
+  </testsuite>
+  <testsuite name="Providers" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.115" tests="2">
     <testcase classname="Providers renders children wrapped in SessionProvider with null session" name="Providers renders children wrapped in SessionProvider with null session" time="0.003">
     </testcase>
-    <testcase classname="Providers renders children wrapped in SessionProvider with a valid session" name="Providers renders children wrapped in SessionProvider with a valid session" time="0.002">
+    <testcase classname="Providers renders children wrapped in SessionProvider with a valid session" name="Providers renders children wrapped in SessionProvider with a valid session" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="ChatList" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.147" tests="3">
-    <testcase classname="ChatList renders the initial message when no messages are provided" name="ChatList renders the initial message when no messages are provided" time="0.004">
-    </testcase>
-    <testcase classname="ChatList renders multiple messages correctly" name="ChatList renders multiple messages correctly" time="0.009">
-    </testcase>
-    <testcase classname="ChatList should scroll to the bottom when new messages are added" name="ChatList should scroll to the bottom when new messages are added" time="0.004">
-    </testcase>
-  </testsuite>
-  <testsuite name="LoginPage" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.127" tests="1">
-    <testcase classname="LoginPage renders the LoginForm component" name="LoginPage renders the LoginForm component" time="0.006">
-    </testcase>
-  </testsuite>
-  <testsuite name="ChatMessage" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.139" tests="3">
-    <testcase classname="ChatMessage renders a user message correctly" name="ChatMessage renders a user message correctly" time="0.007">
-    </testcase>
-    <testcase classname="ChatMessage renders an AI message correctly" name="ChatMessage renders an AI message correctly" time="0.003">
-    </testcase>
-    <testcase classname="ChatMessage renders an empty message correctly" name="ChatMessage renders an empty message correctly" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="HomePage" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.085" tests="1">
+  <testsuite name="HomePage" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.093" tests="1">
     <testcase classname="HomePage should redirect to /chat" name="HomePage should redirect to /chat" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="POST /api/chat" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.115" tests="5">
+  <testsuite name="ChatInput" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.169" tests="3">
+    <testcase classname="ChatInput renders correctly with initial state" name="ChatInput renders correctly with initial state" time="0.037">
+    </testcase>
+    <testcase classname="ChatInput disables input and button when isLoading is true" name="ChatInput disables input and button when isLoading is true" time="0.011">
+    </testcase>
+    <testcase classname="ChatInput enables button when input is not empty and not loading" name="ChatInput enables button when input is not empty and not loading" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="POST /api/chat" errors="0" failures="0" skipped="0" timestamp="2025-06-25T03:08:06" time="0.121" tests="5">
     <testcase classname="POST /api/chat should return a data stream response on success" name="POST /api/chat should return a data stream response on success" time="0.001">
     </testcase>
     <testcase classname="POST /api/chat should return a 401 error if user is not authenticated" name="POST /api/chat should return a 401 error if user is not authenticated" time="0">
     </testcase>
-    <testcase classname="POST /api/chat should return a 500 error if request body is not valid JSON" name="POST /api/chat should return a 500 error if request body is not valid JSON" time="0.009">
+    <testcase classname="POST /api/chat should return a 500 error if request body is not valid JSON" name="POST /api/chat should return a 500 error if request body is not valid JSON" time="0.005">
     </testcase>
-    <testcase classname="POST /api/chat should return a 500 error if streamText fails" name="POST /api/chat should return a 500 error if streamText fails" time="0.002">
+    <testcase classname="POST /api/chat should return a 500 error if streamText fails" name="POST /api/chat should return a 500 error if streamText fails" time="0.001">
     </testcase>
     <testcase classname="POST /api/chat should handle unknown errors" name="POST /api/chat should handle unknown errors" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="SignUpPage" errors="0" failures="0" skipped="0" timestamp="2025-06-25T02:28:23" time="0.239" tests="1">
-    <testcase classname="SignUpPage renders the SignUpForm component" name="SignUpPage renders the SignUpForm component" time="0.015">
+  <testsuite name="SignUpForm" errors="0" failures="1" skipped="0" timestamp="2025-06-25T03:08:05" time="2.137" tests="4">
+    <testcase classname="SignUpForm renders the signup form correctly" name="SignUpForm renders the signup form correctly" time="0.124">
     </testcase>
-  </testsuite>
-  <testsuite name="SignUpForm" errors="0" failures="1" skipped="0" timestamp="2025-06-25T02:28:21" time="2.124" tests="4">
-    <testcase classname="SignUpForm renders the signup form correctly" name="SignUpForm renders the signup form correctly" time="0.133">
-    </testcase>
-    <testcase classname="SignUpForm displays validation errors from the server action" name="SignUpForm displays validation errors from the server action" time="1.046">
+    <testcase classname="SignUpForm displays validation errors from the server action" name="SignUpForm displays validation errors from the server action" time="1.056">
       <failure>Error: Unable to find an element with the text: Please enter a valid email address.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
 
 Ignored nodes: comments, script, style
@@ -349,9 +349,9 @@ Ignored nodes: comments, script, style
     at runTest (/Users/yukinishii/NRI/ai-sdk-project/node_modules/.pnpm/jest-runner@29.7.0/node_modules/jest-runner/build/runTest.js:444:34)
     at Object.worker (/Users/yukinishii/NRI/ai-sdk-project/node_modules/.pnpm/jest-runner@29.7.0/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
     </testcase>
-    <testcase classname="SignUpForm displays a general error message from the server action" name="SignUpForm displays a general error message from the server action" time="0.017">
+    <testcase classname="SignUpForm displays a general error message from the server action" name="SignUpForm displays a general error message from the server action" time="0.025">
     </testcase>
-    <testcase classname="SignUpForm shows pending state when submitting" name="SignUpForm shows pending state when submitting" time="0.01">
+    <testcase classname="SignUpForm shows pending state when submitting" name="SignUpForm shows pending state when submitting" time="0.014">
     </testcase>
   </testsuite>
 </testsuites>
