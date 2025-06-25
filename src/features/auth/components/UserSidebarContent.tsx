@@ -1,15 +1,18 @@
 "use client";
 
 import { LogOut } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import type { Session } from "next-auth";
+
+interface UserSidebarContentProps {
+  session: Session | null;
+}
 
 /**
  * ログインユーザーの情報とログアウトボタンを表示するサイドバーコンテンツコンポーネント。
  * 汎用Sidebarコンポーネントの子要素として使用されます。
  */
-export function UserSidebarContent() {
-  const { data: session } = useSession();
-
+export function UserSidebarContent({ session }: UserSidebarContentProps) {
   if (!session || !session.user) {
     // セッション情報が読み込まれるまでは何も表示しないか、ローディングコンポーネントを表示します。
     return null;

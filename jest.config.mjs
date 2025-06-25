@@ -24,11 +24,7 @@ const config = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   testEnvironment: "jest-environment-jsdom",
   moduleDirectories: ["node_modules", "<rootDir>/"],
-  // Handle ESM modules in node_modules
-  transformIgnorePatterns: [
-    "/node_modules/(?!(next-auth|@auth/core|@ai-sdk/react|jest-runtime)/)",
-    "^.+\\.module\\.(css|sass|scss)$",
-  ],
+
   moduleNameMapper: {
     // Handle module aliases (this will be automatically configured for you soon)
     "^@/(.*)$": "<rootDir>/src/$1",
@@ -40,8 +36,34 @@ const config = {
     "!src/**/*.d.ts",
     "!src/**/__tests__/**",
   ],
+
+  reporters: [
+    "default", // デフォルトのコンソールレポーター
+    [
+      "jest-junit",
+      {
+        outputDirectory: "reports", // 出力先ディレクトリ
+        outputName: "report.html", // 出力ファイル名
+      },
+    ],
+  ],
 };
 
-// createJestConfig is an async function that returns a Jest config -
-// so we have to export a promise
-export default createJestConfig(config);
+// createJestConfigは非同期で設定を返すため、以下のように非同期関数でエクスポートします。
+export default async () => {
+  // まず、Next.jsの基本設定を含んだJest設定を非同期で生成します。
+  const jestConfig = await createJestConfig(config)();
+
+  // 次に、Next.jsが生成した設定のうち、transformIgnorePatternsだけを意図通りに上書きします。
+  jestConfig.transformIgnorePatterns = [
+    // node_modules内のパッケージで、トランスパイル（変換）が必要なものをここで指定します。
+    // (?!...) は否定先読みで、「指定したパッケージ"以外"を無視する」という意味になります。
+    "/node_modules/(?!next-auth|@auth/core|jose|ai|react-sdk)/", // 'ai-sdk/react' を 'ai' と 'react-sdk' に一般化しました
+
+    // Next.jsのデフォルトに含まれるCSS Modules用のパターンも維持します。
+    "^.+\\.module\\.(css|sass|scss)$",
+  ];
+
+  // 最終的に加工した設定オブジェクトを返します。
+  return jestConfig;
+};

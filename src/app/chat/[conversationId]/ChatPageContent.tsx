@@ -25,17 +25,21 @@ export function ChatPageContent({
           const userMessage = input;
           const assistantMessage = message.content; // アシスタントからの最後のメッセージ
 
-          await fetch("/api/chat/history", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              userMessage,
-              assistantMessage,
-              conversationId: conversationId,
-            }),
-          });
-          // サイドバーの履歴を更新（最終更新日時が変わるため）
-          router.refresh();
+          try {
+            await fetch("/api/chat/history", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                userMessage,
+                assistantMessage,
+                conversationId: conversationId,
+              }),
+            });
+            // サイドバーの履歴を更新（最終更新日時が変わるため）
+            router.refresh();
+          } catch (error) {
+            console.error("Failed to save chat history:", error);
+          }
         });
       },
     });

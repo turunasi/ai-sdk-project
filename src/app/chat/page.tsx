@@ -11,7 +11,7 @@ export default async function NewChatPage() {
   const newConversation = await prisma.conversation.create({
     data: {
       userId: session.user.id,
-      title: "New Chat", // デフォルトのタイトル
+      title: `New Chat - ${new Date().toLocaleString("ja-JP")}`,
     },
     select: {
       id: true,

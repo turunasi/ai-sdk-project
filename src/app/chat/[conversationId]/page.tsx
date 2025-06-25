@@ -33,7 +33,9 @@ export default async function ConversationPage({
     notFound();
   }
 
-  const chat = await getChat(params.conversationId, session.user.id);
+  // Ensure params is fully resolved before accessing its properties
+  const resolvedParams = await Promise.resolve(params);
+  const chat = await getChat(resolvedParams.conversationId, session.user.id);
 
   if (!chat) {
     notFound();

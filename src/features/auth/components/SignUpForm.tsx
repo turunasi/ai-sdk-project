@@ -2,7 +2,8 @@
 
 import { signup } from "@/features/auth/actions/signup";
 import Link from "next/link";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 
 function SignUpButton() {
   const { pending } = useFormStatus();
@@ -19,7 +20,7 @@ function SignUpButton() {
 
 export function SignUpForm() {
   const initialState = { message: null, errors: {} };
-  const [state, dispatch] = useFormState(signup, initialState);
+  const [state, dispatch] = useActionState(signup, initialState);
 
   return (
     <form action={dispatch} className="space-y-6">
@@ -39,7 +40,9 @@ export function SignUpForm() {
             className="mt-1 block w-full appearance-none rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
           />
           {state.errors?.email && (
-            <p className="mt-1 text-sm text-red-500">{state.errors.email}</p>
+            <p className="mt-1 text-sm text-red-500">
+              {state.errors.email.join(", ")}
+            </p>
           )}
         </div>
         <div>
@@ -58,7 +61,9 @@ export function SignUpForm() {
             className="mt-1 block w-full appearance-none rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
           />
           {state.errors?.password && (
-            <p className="mt-1 text-sm text-red-500">{state.errors.password}</p>
+            <p className="mt-1 text-sm text-red-500">
+              {state.errors.password.join(", ")}
+            </p>
           )}
         </div>
       </div>

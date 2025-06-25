@@ -1,10 +1,15 @@
 import { POST } from "../route";
 import { streamText } from "ai";
 import { google } from "@ai-sdk/google";
+import { auth } from "@/features/auth/lib/auth";
 
 // Mock dependencies
 jest.mock("ai", () => ({
   streamText: jest.fn(),
+}));
+
+jest.mock("@/features/auth/lib/auth", () => ({
+  auth: jest.fn(),
 }));
 
 jest.mock("@ai-sdk/google", () => ({
@@ -14,9 +19,11 @@ jest.mock("@ai-sdk/google", () => ({
 describe("POST /api/chat", () => {
   const mockStreamText = streamText as jest.Mock;
   const mockGoogle = google as jest.Mock;
+  const mockAuth = auth as jest.Mock;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockAuth.mockResolvedValue({ user: { id: "test-user" } });
   });
 
   it("should return a data stream response on success", async () => {
@@ -42,6 +49,21 @@ describe("POST /api/chat", () => {
       messages: mockMessages,
     });
     expect(response).toBe(mockStreamResponse);
+  });
+
+  it("should return a 401 error if user is not authenticated", async () => {
+    mockAuth.mockResolvedValue(null); // Simulate unauthenticated user
+
+    const request = new Request("http://localhost/api/chat", {
+      method: "POST",
+      body: JSON.stringify({ messages: [] }),
+    });
+
+    const response = await POST(request);
+    const responseBody = await response.json();
+
+    expect(response.status).toBe(401);
+    expect(responseBody.error).toBe("Unauthorized");
   });
 
   it("should return a 500 error if request body is not valid JSON", async () => {

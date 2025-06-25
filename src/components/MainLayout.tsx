@@ -33,7 +33,7 @@ export async function MainLayout({ children }: MainLayoutProps) {
       <Sidebar>
         <div className="flex h-full flex-col">
           <ChatHistory history={history} />
-          <UserSidebarContent />
+          <UserSidebarContent session={session} />
         </div>
       </Sidebar>
       {children}

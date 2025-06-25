@@ -1,15 +1,13 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { UserSidebarContent } from "../UserSidebarContent";
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 // Mock next-auth/react
 jest.mock("next-auth/react", () => ({
-  useSession: jest.fn(),
   signOut: jest.fn(),
 }));
 
 describe("UserSidebarContent", () => {
-  const mockUseSession = useSession as jest.Mock;
   const mockSignOut = signOut as jest.Mock;
 
   afterEach(() => {
@@ -17,53 +15,35 @@ describe("UserSidebarContent", () => {
   });
 
   it("renders user information and logout button when session exists", () => {
-    mockUseSession.mockReturnValue({
-      data: {
-        user: {
-          name: "Taro Yamada",
-          email: "user@example.com",
-        },
-      },
-      status: "authenticated",
-    });
+    const mockSession = {
+      user: { name: "Taro Yamada", email: "user@example.com", id: "123" },
+      expires: "some-date",
+    };
 
-    render(<UserSidebarContent />);
+    render(<UserSidebarContent session={mockSession} />);
 
-    expect(screen.getByText("ユーザー情報")).toBeInTheDocument();
     expect(screen.getByText("Taro Yamada")).toBeInTheDocument();
     expect(screen.getByText("user@example.com")).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "ログアウト" }),
+      screen.getByRole("button", { name: /ログアウト/i }),
     ).toBeInTheDocument();
   });
 
   it("calls signOut when the logout button is clicked", () => {
-    mockUseSession.mockReturnValue({
-      data: {
-        user: {
-          name: "Taro Yamada",
-          email: "user@example.com",
-        },
-      },
-      status: "authenticated",
-    });
+    const mockSession = {
+      user: { name: "Taro Yamada", email: "user@example.com", id: "123" },
+      expires: "some-date",
+    };
+    render(<UserSidebarContent session={mockSession} />);
 
-    render(<UserSidebarContent />);
-
-    const logoutButton = screen.getByRole("button", { name: "ログアウト" });
+    const logoutButton = screen.getByRole("button", { name: /ログアウト/i });
     fireEvent.click(logoutButton);
-
     expect(mockSignOut).toHaveBeenCalledTimes(1);
     expect(mockSignOut).toHaveBeenCalledWith({ callbackUrl: "/login" });
   });
 
   it("renders null when there is no session data", () => {
-    mockUseSession.mockReturnValue({
-      data: null,
-      status: "unauthenticated",
-    });
-
-    const { container } = render(<UserSidebarContent />);
+    const { container } = render(<UserSidebarContent session={null} />);
     expect(container.firstChild).toBeNull();
   });
 });

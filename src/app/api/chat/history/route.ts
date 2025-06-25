@@ -6,7 +6,7 @@ import { z } from "zod";
 const saveChatSchema = z.object({
   userMessage: z.string(),
   assistantMessage: z.string(),
-  conversationId: z.string(),
+  conversationId: z.string().nullable().optional(),
 });
 
 export async function POST(req: Request) {
@@ -63,7 +63,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ conversationId: newConversation.id });
     }
   } catch (error) {
-    console.error("[SAVE CHAT ERROR]", error);
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: "Invalid request body", details: error.flatten() },
+        { status: 400 },
+      );
+    }
+    console.error("[API_CHAT_HISTORY_POST]", error);
     return new NextResponse(
       JSON.stringify({ error: "Internal Server Error" }),
       {

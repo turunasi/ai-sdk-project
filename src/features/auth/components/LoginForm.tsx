@@ -2,7 +2,8 @@
 
 import { authenticate } from "@/features/auth/actions/login";
 import Link from "next/link";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 
 function LoginButton() {
   const { pending } = useFormStatus();
@@ -18,7 +19,7 @@ function LoginButton() {
 }
 
 export function LoginForm() {
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+  const [errorMessage, dispatch] = useActionState(authenticate, undefined);
 
   return (
     <form action={dispatch} className="space-y-6">

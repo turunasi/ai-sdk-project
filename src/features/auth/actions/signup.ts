@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import { addUser } from "@/features/auth/lib/auth";
 import { signIn } from "@/features/auth/lib/auth";
 import { AuthError } from "next-auth";
+import { redirect } from "next/navigation";
 
 const SignUpSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -37,8 +38,7 @@ export async function signup(prevState: State, formData: FormData) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
-    addUser({
-      id: crypto.randomUUID(),
+    await addUser({
       email,
       password: hashedPassword,
     });
@@ -47,9 +47,11 @@ export async function signup(prevState: State, formData: FormData) {
   }
 
   try {
-    await signIn("credentials", { email, password, redirectTo: "/" });
+    await signIn("credentials", { email, password, redirect: false });
+    redirect("/chat");
   } catch (error) {
     if (error instanceof AuthError) {
+      // ここでのエラーは主に認証の失敗（CredentialsSignin）を想定
       return { message: "Something went wrong. Please try again." };
     }
     throw error;

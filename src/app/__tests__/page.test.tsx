@@ -1,41 +1,21 @@
-import { render, screen } from "@testing-library/react";
-import ChatPage from "@/app/page";
+import HomePage from "@/app/page";
+import { redirect } from "next/navigation";
 
-// Mock child components
-jest.mock("@/features/auth/components/UserSidebarContent", () => ({
-  UserSidebarContent: () => (
-    <div data-testid="user-sidebar-content">Mocked Sidebar</div>
-  ),
-}));
-
-jest.mock("@ai-sdk/react", () => ({
-  useChat: () => ({
-    messages: [],
-    input: "",
-    handleInputChange: jest.fn(),
-    handleSubmit: jest.fn(),
-    isLoading: false,
+jest.mock("next/navigation", () => ({
+  redirect: jest.fn((url: string) => {
+    // In a test environment, redirect throws an error that can be caught.
+    throw new Error(`NEXT_REDIRECT: ${url}`);
   }),
 }));
 
-describe("ChatPage", () => {
-  it("renders the chat page with sidebar, header, and initial message", () => {
-    render(<ChatPage />);
+describe("HomePage", () => {
+  const mockRedirect = redirect as jest.Mock;
 
-    // Check for the mocked sidebar
-    expect(screen.getByTestId("user-sidebar-content")).toBeInTheDocument();
-
-    // Check for the header
-    expect(
-      screen.getByRole("heading", { name: /AI Chat/i }),
-    ).toBeInTheDocument();
-
-    // Check for the initial prompt message when there are no chat messages
-    expect(screen.getByText("AIに話しかけてみましょう！")).toBeInTheDocument();
-
-    // Check for the input field
-    expect(
-      screen.getByPlaceholderText("AIにメッセージを送信..."),
-    ).toBeInTheDocument();
+  it("should redirect to /chat", () => {
+    // The HomePage component itself throws the error when redirect is called.
+    expect(() => {
+      HomePage();
+    }).toThrow("NEXT_REDIRECT: /chat");
+    expect(mockRedirect).toHaveBeenCalledWith("/chat");
   });
 });
