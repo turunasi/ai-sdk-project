@@ -49,18 +49,12 @@ const config = {
   ],
 };
 
-// createJestConfigは非同期で設定を返すため、以下のように非同期関数でエクスポートします。
 export default async () => {
-  // まず、Next.jsの基本設定を含んだJest設定を非同期で生成します。
   const jestConfig = await createJestConfig(config)();
 
-  // 次に、Next.jsが生成した設定のうち、transformIgnorePatternsだけを意図通りに上書きします。
   jestConfig.transformIgnorePatterns = [
-    // node_modules内のパッケージで、トランスパイル（変換）が必要なものをここで指定します。
-    // (?!...) は否定先読みで、「指定したパッケージ"以外"を無視する」という意味になります。
     "/node_modules/(?!next-auth|@auth/core|jose|ai|react-sdk)/", // 'ai-sdk/react' を 'ai' と 'react-sdk' に一般化しました
 
-    // Next.jsのデフォルトに含まれるCSS Modules用のパターンも維持します。
     "^.+\\.module\\.(css|sass|scss)$",
   ];
 

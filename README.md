@@ -26,33 +26,57 @@ Next.jsとVercel AI SDKを使用して構築された、モダンでスケーラ
 
 このプロジェクトでは、**bulletproof-react**の考え方に基づいた、機能ベースのディレクトリ構造を採用しています。このアプローチにより、アプリケーションが成長してもコードベースが整理され、スケーラビリティと保守性が向上します。
 
-各機能（例：チャット、認証）に関連するコンポーネントやロジックは、それぞれ`src/features/`以下の対応するディレクトリに集約されています。
+各機能（例：チャット、認証、データベース）に関連するコンポーネントやロジックは、それぞれ`src/features/`以下の対応するディレクトリに集約されています。例えば、認証機能には、`actions`（サーバーアクション）、`components`（UI）、`lib`（Auth.js設定）が含まれます。
 
-また、特定の機能に依存しない共通コンポーネントは`src/components/`に配置されます。例えば、`Sidebar.tsx`は汎用的なサイドバーのレイアウトを提供し、その中に`features/auth/components/UserSidebarContent.tsx`のような機能固有のコンポーネントを配置することで、再利用性と関心の分離を実現しています。
+また、特定の機能に依存しない共通コンポーネントは`src/components/`に配置されます。例えば、`Sidebar.tsx`は汎用的なサイドバーのレイアウトを提供し、`MainLayout.tsx`がそれを組み込んでアプリケーション全体のレイアウトを構成します。`MainLayout.tsx`の中には`features/auth/components/UserSidebarContent.tsx`や`features/chat/components/ChatHistory.tsx`のような機能固有のコンポーネントが配置され、再利用性と関心の分離を実現しています。
 
 ```
 src/
-├── app/
-│   ├── api/chat/route.ts   # チャット用のAPIエンドポイント
-│   └── page.tsx            # メインページのコンポーネント (認証後アクセス)
-├── components/             # 共通のUIコンポーネントやレイアウト
-│   └── Sidebar.tsx         # 例: 汎用的なサイドバーコンポーネント
-├── features/
-│   ├── auth/
-│   │   ├── components/     # 認証機能のReactコンポーネント
-│   │   │   └── UserSidebarContent.tsx # 例: ユーザー情報表示コンポーネント
-│   │   ├── lib/            # 認証関連のユーティリティやロジック
-│   │   │   └── auth.ts     # Auth.jsの設定と認証ロジック
-│   │   └── index.ts        # 認証機能のエントリーポイント
-│   └── chat/               # チャット機能関連
-│       ├── components/     # チャット機能のReactコンポーネント
-│       │   ├── ChatInput.tsx
-│       │   ├── ChatList.tsx
-│       │   └── ChatMessage.tsx
-│       └── index.ts        # チャット機能のエントリーポイント
-├── lib/                    # 共通のユーティリティ関数やヘルパー
-│   └── ...
-└── middleware.ts           # Next.jsのミドルウェア (認証ルート保護など)
+├── app/                      # Next.jsのApp Router。ルーティングとUIを定義
+│   ├── api/                  # APIルート
+│   │   ├── auth/[...auth]/route.ts # NextAuth.jsの認証API（サインイン、セッション等）
+│   │   └── chat/
+│   │       ├── history/route.ts    # チャット履歴をDBに保存するAPI
+│   │       └── route.ts            # AIとのチャットストリーミングAPI
+│   ├── chat/                   # チャット機能のページ
+│   │   ├── [conversationId]/
+│   │   │   ├── page.tsx            # 既存の会話ページ (Server Component)
+│   │   │   └── ChatPageContent.tsx # チャットUI (Client Component)
+│   │   └── page.tsx              # 新規チャット作成ページ (リダイレクト)
+│   ├── login/page.tsx          # ログインページ
+│   ├── signup/page.tsx         # 新規登録ページ
+│   ├── layout.tsx              # アプリケーションのルートレイアウト
+│   ├── page.tsx                # ルートページ (/)。/chatへリダイレクト
+│   └── providers.tsx           # クライアントサイドのプロバイダー (SessionProvider)
+├── components/                 # 機能に依存しない共通UIコンポーネント
+│   ├── MainLayout.tsx          # サイドバーを含むメインレイアウト
+│   └── Sidebar.tsx             # 汎用サイドバーコンポーネント
+├── features/                   # 機能ごとのモジュール
+│   ├── auth/                   # 認証機能
+│   │   ├── actions/            # 認証関連のサーバーアクション
+│   │   │   ├── login.ts        # ログイン処理
+│   │   │   └── signup.ts       # 新規登録処理
+│   │   ├── components/         # 認証関連のReactコンポーネント
+│   │   │   ├── LoginForm.tsx   # ログインフォーム
+│   │   │   ├── SignUpForm.tsx  # 新規登録フォーム
+│   │   │   └── UserSidebarContent.tsx # サイドバーのユーザー情報表示
+│   │   └── lib/
+│   │       └── auth.ts         # Auth.js (NextAuth) の設定
+│   ├── chat/                   # チャット機能
+│   │   └── components/         # チャット関連のReactコンポーネント
+│   │       ├── ChatHistory.tsx # チャット履歴リスト
+│   │       ├── ChatInput.tsx   # メッセージ入力フォーム
+│   │       ├── ChatList.tsx    # メッセージリスト
+│   │       ├── ChatMessage.tsx # 個々のメッセージ
+│   │       └── NewChatButton.tsx # 新規チャットボタン
+│   └── database/               # データベース関連
+│       ├── lib/prisma.ts       # Prisma Clientのシングルトンインスタンス
+│       └── index.ts            # prismaインスタンスのエントリーポイント
+├── lib/                        # プロジェクト全体で利用する共通ライブラリ (現在は未使用)
+├── types/                      # 型定義ファイル
+│   └── next-auth.d.ts          # NextAuth.jsのセッション型の拡張
+└── middleware.ts               # Next.jsのミドルウェア (ルート保護)
+
 
 ```
 
@@ -60,19 +84,17 @@ src/
 
 ## 🔐 認証 (Authentication)
 
-このアプリケーションは Auth.js (NextAuth.js) を使用して、堅牢な認証システムを実装しています。
+このアプリケーションは Auth.js (NextAuth.js) を使用して、堅牢な認証システムを実装しています。サーバーアクションと`useActionState`フックを活用し、モダンなフォームハンドリングを実現しています。
 
 - **認証フロー**:
 
-  - **資格情報プロバイダー**: メールアドレスとパスワードによるログイン（`Credentials`プロバイダー）を実装しています。
-  - **デモ用ユーザー**: 開発およびテスト用に、以下のダミーユーザーがハードコードされています (`src/features/auth/lib/auth.ts`参照)。
-    - **Email**: `user@example.com`
-    - **Password**: `password123`
+  - **資格情報プロバイダー**: メールアドレスとパスワードによるログイン（`Credentials`プロバイダー）を実装しています。認証ロジックでは`bcryptjs`によるパスワードのハッシュ化と比較、`zod`による入力値の検証を行っています。
+  - **新規登録**: ユーザーはメールアドレスとパスワードで新しいアカウントを作成できます。登録後、自動的にログイン状態になります。
   - **セッション管理**: `callbacks`を利用して、セッション情報にユーザーIDを含めるようにカスタマイズしています。これにより、クライアント側で認証ユーザーのIDを安全に利用できます。
 
 - **ルート保護**:
-  - Next.jsの**Middleware** (`src/middleware.ts`) を活用し、アプリケーションの主要なルートを保護しています。
-  - 未認証のユーザーが保護されたページ（例: トップページ）にアクセスしようとすると、自動的にログインページ (`/login`) にリダイレクトされます。
+  - Next.jsの**Middleware** (`src/middleware.ts`) を活用し、アプリケーションの主要なルート（`/login`, `/signup`などを除く）を保護しています。
+  - 未認証のユーザーが保護されたページにアクセスしようとすると、自動的にログインページ (`/login`) にリダイレクトされます。
 
 ## 🚀 はじめに
 
