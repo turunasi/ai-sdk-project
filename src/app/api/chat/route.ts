@@ -1,11 +1,7 @@
-import { experimental_createMCPClient, streamText } from "ai";
+import { createDataStream, streamText } from "ai";
 import { google } from "@ai-sdk/google";
 import { NextResponse } from "next/server";
 import { auth } from "@/features/auth/lib/auth";
-
-// PrismaをNode.jsランタイムで利用するため、Edge Runtimeを無効化します。
-// Prisma AccelerateやData Proxyを利用する場合は、この行を有効にしても構いません。
-// export const runtime = "edge";
 
 export async function POST(req: Request) {
   try {
@@ -19,29 +15,57 @@ export async function POST(req: Request) {
       });
     }
 
-    const mcpClient = await experimental_createMCPClient({
-      transport: {
-        type: "sse",
-        url: process.env.MCP_SERVER_URL || "http://127.0.0.1:8000/sse",
+    const { messages, data } = await req.json();
+    const refContents = data?.refContents.content[0].text;
+    console.log(refContents);
+
+    const systemPrompt = `You are a faithful AI assistant that answers questions based on the provided information.
+Please strictly adhere to the following rules when generating your answer.
+
+# Rules
+- You must generate your answer based **only** on the content provided in the "Reference Information" below.
+- Do not include any information from your own knowledge or any assumptions.
+- If the answer to the question cannot be found in the "Reference Information", you must state that "I could not find the relevant information in the provided content." without generating any speculative answer.
+
+${
+  refContents
+    ? `
+# Reference Information
+${JSON.stringify(refContents)}`
+    : ""
+}`;
+    const dataStream = createDataStream({
+      execute: async (dataStreamWriter) => {
+        try {
+          if (refContents) {
+            dataStreamWriter.writeMessageAnnotation({
+              type: "data-ref-contents",
+              id: "ref-contents-1",
+              data: refContents,
+            });
+          }
+
+          const result = streamText({
+            model: google("models/gemini-2.0-flash-lite"),
+            messages,
+            system: systemPrompt,
+          });
+
+          result.mergeIntoDataStream(dataStreamWriter);
+        } catch (error) {
+          console.error("[API execute Error]", error);
+          throw error;
+        }
       },
     });
 
-    const { messages } = await req.json();
-
-    // Schema Discovery を使用して MCP サーバーからツール定義を取得
-    const tools = await mcpClient.tools();
-
-    const result = await streamText({
-      model: google("models/gemini-2.0-flash-lite"),
-      messages,
-      tools,
-      onFinish: () => {
-        // ストリーミング応答が完了したら、必ず MCP クライアントの接続を閉じる
-        mcpClient.close();
+    // ストリームをレスポンスとして返す
+    return new Response(dataStream, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "X-Vercel-AI-Data-Stream": "v1",
       },
     });
-
-    return result.toDataStreamResponse();
   } catch (error: unknown) {
     console.error("[API Error]", error);
     const errorMessage =
